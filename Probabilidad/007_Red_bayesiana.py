@@ -1,50 +1,42 @@
-# Importamos las librerías necesarias
-from pgmpy.models import BayesianModel
+from pgmpy.models import BayesianNetwork
 from pgmpy.factors.discrete import TabularCPD
 from pgmpy.inference import VariableElimination
 
-def crear_modelo():
-    """Crea y devuelve un modelo bayesiano con sus CPDs asociadas."""
-    # Creamos la estructura de la Red Bayesiana
-    modelo = BayesianModel([("Lluvia", "Tráfico"), ("Lluvia", "Retraso"), ("Tráfico", "Retraso")])
+# Definir la estructura de la red bayesiana
+modelo = BayesianNetwork([("Lluvia", "Césped Mojado"), ("Riego", "Césped Mojado")])
 
-    # Definimos las Tablas de Probabilidad Condicionada (CPDs)
-    cpd_lluvia = TabularCPD(variable="Lluvia", variable_card=2, values=[[0.7], [0.3]])  # P(Lluvia)
-    cpd_trafico = TabularCPD(variable="Tráfico", variable_card=2,
-                             values=[[0.8, 0.3], [0.2, 0.7]],  # P(Tráfico | Lluvia)
-                             evidence=["Lluvia"], evidence_card=[2])
-    cpd_retraso = TabularCPD(variable="Retraso", variable_card=2,
-                             values=[[0.9, 0.6, 0.5, 0.1], [0.1, 0.4, 0.5, 0.9]],  # P(Retraso | Lluvia, Tráfico)
-                             evidence=["Lluvia", "Tráfico"], evidence_card=[2, 2])
+# Definir las distribuciones de probabilidad para cada nodo
+cpd_lluvia = TabularCPD(variable="Lluvia", variable_card=2, values=[[0.2], [0.8]], state_names={"Lluvia": ["Sí", "No"]})
+cpd_riego = TabularCPD(variable="Riego", variable_card=2, values=[[0.5], [0.5]], state_names={"Riego": ["Sí", "No"]})
 
-    # Asociamos las CPDs al modelo
-    modelo.add_cpds(cpd_lluvia, cpd_trafico, cpd_retraso)
+# Definir la distribución condicional de "Césped Mojado" dado "Lluvia" y "Riego"
+cpd_cesped_mojado = TabularCPD(
+    variable="Césped Mojado",
+    variable_card=2,
+    values=[
+        [0.99, 0.8, 0.9, 0.0],  # Probabilidad de "Sí"
+        [0.01, 0.2, 0.1, 1.0],  # Probabilidad de "No"
+    ],
+    evidence=["Lluvia", "Riego"],
+    evidence_card=[2, 2],
+    state_names={
+        "Césped Mojado": ["Sí", "No"],
+        "Lluvia": ["Sí", "No"],
+        "Riego": ["Sí", "No"],
+    },
+)
 
-    # Verificamos si la red está bien definida
-    if modelo.check_model():
-        print("El modelo es válido.")
-    else:
-        raise ValueError("El modelo no es válido. Verifica las CPDs.")
+# Añadir las CPDs al modelo
+modelo.add_cpds(cpd_lluvia, cpd_riego, cpd_cesped_mojado)
 
-    return modelo
+# Validar el modelo
+if not modelo.check_model():
+    raise ValueError("El modelo no es válido. Verifica las CPDs.")
 
-def realizar_inferencia(modelo, evidencia):
-    """Realiza inferencia sobre el modelo dado una evidencia."""
-    inferencia = VariableElimination(modelo)
-    resultado = inferencia.query(variables=["Retraso"], evidence=evidencia)
-    return resultado
+# Inferencia: calcular la probabilidad de que haya llovido si el césped está mojado
+inferencia = VariableElimination(modelo)
+resultado = inferencia.query(variables=["Lluvia"], evidence={"Césped Mojado": "Sí"})
 
-if __name__ == "__main__":
-    try:
-        # Crear el modelo bayesiano
-        modelo = crear_modelo()
-
-        # Realizar inferencia con evidencia
-        evidencia = {"Tráfico": 1}  # 1 significa que hay tráfico
-        resultado = realizar_inferencia(modelo, evidencia)
-
-        # Mostrar resultados
-        print("Probabilidad de retraso dada la evidencia:")
-        print(resultado)
-    except Exception as e:
-        print(f"Error: {e}")
+# Mostrar resultados
+print("Probabilidad de que haya llovido dado que el césped está mojado:")
+print(resultado)
