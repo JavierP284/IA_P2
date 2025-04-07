@@ -1,7 +1,7 @@
 import numpy as np
 
 # -------------------------------
-# 🔢 Paso 1: Definir la matriz de transición
+# Paso 1: Definir la matriz de transición
 # -------------------------------
 # Ejemplo: Estados
 # A: Descansando, B: Trabajando, C: Vacaciones
@@ -16,7 +16,7 @@ if not np.allclose(P.sum(axis=1), 1):
     raise ValueError("La matriz de transición no es estocástica. Las filas deben sumar 1.")
 
 # -------------------------------
-# 🔄 Paso 2: Iterar hasta encontrar el estado estacionario
+# Paso 2: Iterar hasta encontrar el estado estacionario
 # -------------------------------
 def encontrar_estado_estacionario(P, tol=1e-8, max_iter=1000, verbose=False):
     """
@@ -46,13 +46,14 @@ def encontrar_estado_estacionario(P, tol=1e-8, max_iter=1000, verbose=False):
             print(f"Convergencia alcanzada en {i+1} iteraciones.")
             return nuevo_estado
 
+
         estado = nuevo_estado  # Actualizamos el estado
 
     print("No se alcanzó la convergencia.")
     return estado
 
 # -------------------------------
-# 🖨️ Paso 3: Ejecutar y mostrar resultado
+# Paso 3: Ejecutar y mostrar resultado
 # -------------------------------
 estado_estacionario = encontrar_estado_estacionario(P, verbose=True)
 print("\nDistribución estacionaria:")
