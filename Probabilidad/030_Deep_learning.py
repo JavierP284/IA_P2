@@ -1,9 +1,9 @@
 # Importamos las librerías necesarias
 import tensorflow as tf
-from keras.datasets import mnist
-from keras.models import Sequential
-from keras.layers import Dense, Flatten
-from keras.utils import to_categorical
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Flatten
+from tensorflow.keras.utils import to_categorical
 import matplotlib.pyplot as plt
 
 # 1. Cargamos el conjunto de datos MNIST (imágenes de dígitos 0 al 9)
