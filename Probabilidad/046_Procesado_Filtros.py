@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 
 # Leer la imagen en escala de grises
-# Se carga la imagen 'filtro.jpeg' en modo de escala de grises.
-image = cv2.imread('filtro.jpeg', cv2.IMREAD_GRAYSCALE)
+# Se carga la imagen 'filtrar.jpeg' en modo de escala de grises.
+image = cv2.imread('Probabilidad/Imagenes/filtrar.jpeg', cv2.IMREAD_GRAYSCALE)
 
 # Verificar si la imagen se cargó correctamente
 # Si la imagen no se encuentra o no se puede cargar, se muestra un mensaje de error y se detiene el programa.
