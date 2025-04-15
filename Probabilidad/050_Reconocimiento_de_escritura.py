@@ -106,8 +106,7 @@ def main():
     3. Crea y entrena el modelo.
     4. Evalúa el modelo con los datos de prueba.
     5. Muestra la matriz de confusión.
-    6. Guarda el modelo entrenado.
-    7. Realiza una predicción de ejemplo.
+    6. Realiza una predicción de ejemplo.
     """
     # Cargar y preprocesar los datos
     (x_entrenamiento, y_entrenamiento), (x_prueba, y_prueba) = cargar_datos()
