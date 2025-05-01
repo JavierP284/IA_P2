@@ -127,7 +127,7 @@ def verificar_entrega(estado):
 # -------------------------------------------------------
 # Escenarios de prueba
 # Escenario 1: El paquete no está disponible
-print("🔹 Escenario 1: El paquete NO está disponible")
+print("Escenario 1: El paquete NO está disponible")
 estado_escenario_1 = {
     "ubicacion_robot": "pasillo",
     "paquete_disponible": False,
@@ -136,7 +136,7 @@ estado_escenario_1 = {
 simular_escenario(estado_escenario_1, plan_original)
 
 # Escenario 2: El robot no está en el almacén
-print("\n🔹 Escenario 2: El robot no está en el almacén")
+print("\nEscenario 2: El robot no está en el almacén")
 estado_escenario_2 = {
     "ubicacion_robot": "oficina",
     "paquete_disponible": True,
